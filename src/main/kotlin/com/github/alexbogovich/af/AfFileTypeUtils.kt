@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamConstants
 import javax.xml.transform.stream.StreamSource
 
 object AfFileTypeUtils {
-    fun getUspnFileType(fileSource: StreamSource, typeTagPos: Int = 2): String {
+    @JvmOverloads fun getUspnFileType(fileSource: StreamSource, typeTagPos: Int = 2): String {
         val factory = XMLInputFactory.newInstance()
         val reader = factory.createXMLStreamReader(fileSource)
 
@@ -32,11 +32,7 @@ object AfFileTypeUtils {
         return type
     }
 
-    fun getUspnFileType(filePath: Path): String {
-        return getUspnFileType(filePath, 2)
-    }
-
-    fun getUspnFileType(filePath: Path, typeTagPos: Int = 2): String {
+    @JvmOverloads fun getUspnFileType(filePath: Path, typeTagPos: Int = 2): String {
         return getUspnFileType(getSource(filePath), typeTagPos)
     }
 }

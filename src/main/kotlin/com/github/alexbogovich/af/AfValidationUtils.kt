@@ -52,8 +52,8 @@ object AfValidationUtils {
 
     fun getSchema(schemaFolder: URL, type: String) = getSchema(Paths.get(schemaFolder.toURI()), type)
 
-    fun getValidator(afFileType: String, pathToSchemaFolder: Path, errorTargetCollection:
-    MutableCollection<SAXParseException?>): Validator {
+    @JvmOverloads fun getValidator(afFileType: String, pathToSchemaFolder: Path, errorTargetCollection:
+    MutableCollection<SAXParseException?> = getNewErrorList()): Validator {
         val file = getSchema(pathToSchemaFolder, afFileType)
                 .orElseThrow { RuntimeException("Schema for $afFileType not found") }
                 .toFile()
@@ -77,18 +77,15 @@ object AfValidationUtils {
         return validator
     }
 
-    fun validateDocument(documentFile: String,
+    @JvmOverloads fun validateDocument(documentFile: String,
                          afFileType: String,
                          pathToSchemaFolder: String,
-                         errorTargetCollection: MutableCollection<SAXParseException?>
+                         errorTargetCollection: MutableCollection<SAXParseException?> = getNewErrorList()
     ): Collection<SAXParseException?> {
         return validateDocument(Paths.get(documentFile), afFileType, Paths.get(pathToSchemaFolder), errorTargetCollection)
     }
 
-    fun validateDocument(documentFile: String, afFileType: String, pathToSchemaFolder: String)
-            = validateDocument(documentFile, afFileType, pathToSchemaFolder, getNewErrorList())
-
-    fun validateDocument(documentFile: Path,
+    @JvmOverloads fun validateDocument(documentFile: Path,
                          afFileType: String,
                          pathToSchemaFolder: Path,
                          errorTargetCollection: MutableCollection<SAXParseException?> = getNewErrorList()
@@ -96,9 +93,6 @@ object AfValidationUtils {
         getValidator(afFileType, pathToSchemaFolder, errorTargetCollection).validate(getSource(documentFile))
         return errorTargetCollection
     }
-
-    fun validateDocument(documentFile: Path, afFileType: String, pathToSchemaFolder: Path)
-            = validateDocument(documentFile, afFileType, pathToSchemaFolder, getNewErrorList())
 
     fun getSource(file: Path) : StreamSource {
         return when (file.fileName.toString().toLowerCase().split('.').last()) {
