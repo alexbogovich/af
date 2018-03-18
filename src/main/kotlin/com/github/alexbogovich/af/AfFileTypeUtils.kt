@@ -32,8 +32,8 @@ object AfFileTypeUtils {
         return type
     }
 
-    fun getUspnFileType(fileSource: StreamSource): String {
-        return getUspnFileType(fileSource, 2)
+    fun getUspnFileType(filePath: Path): String {
+        return getUspnFileType(filePath, 2)
     }
 
     fun getUspnFileType(filePath: Path, typeTagPos: Int = 2): String {
