@@ -80,10 +80,13 @@ object AfValidationUtils {
     fun validateDocument(documentFile: String,
                          afFileType: String,
                          pathToSchemaFolder: String,
-                         errorTargetCollection: MutableCollection<SAXParseException?> = getNewErrorList()
+                         errorTargetCollection: MutableCollection<SAXParseException?>
     ): Collection<SAXParseException?> {
         return validateDocument(Paths.get(documentFile), afFileType, Paths.get(pathToSchemaFolder), errorTargetCollection)
     }
+
+    fun validateDocument(documentFile: String, afFileType: String, pathToSchemaFolder: String)
+            = validateDocument(documentFile, afFileType, pathToSchemaFolder, getNewErrorList())
 
     fun validateDocument(documentFile: Path,
                          afFileType: String,
@@ -93,6 +96,9 @@ object AfValidationUtils {
         getValidator(afFileType, pathToSchemaFolder, errorTargetCollection).validate(getSource(documentFile))
         return errorTargetCollection
     }
+
+    fun validateDocument(documentFile: Path, afFileType: String, pathToSchemaFolder: Path)
+            = validateDocument(documentFile, afFileType, pathToSchemaFolder, getNewErrorList())
 
     fun getSource(file: Path) : StreamSource {
         return when (file.fileName.toString().toLowerCase().split('.').last()) {
