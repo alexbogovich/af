@@ -1,0 +1,15 @@
+out/
+.idea_modules/
+.idea/
+*.log
+*.jar
+*.war
+*.ear
+*.tar.gz
+*.rar
+### Gradle template
+.gradle/
+/build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
