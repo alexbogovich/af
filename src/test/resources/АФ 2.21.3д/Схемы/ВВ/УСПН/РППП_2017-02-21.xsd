@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВВ/УСПН/РППП/2017-02-21" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" xmlns:АФ="http://пф.рф/АФ"
+           xmlns:НПФ="http://пф.рф/ВсВО/НПФ/типы/2016-07-01" targetNamespace="http://пф.рф/ВВ/УСПН/РППП/2017-02-21">
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../xmldsig_core_schema.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2016-07-01" schemaLocation="../../ВсВО/НПФ/ТипыНПФ_2016-07-01.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Реестр проведенных платежей</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ РППП (Реестр проведенных платежей). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="РППП">
+					<xs:annotation>
+						<xs:documentation>Реестр проведенных платежей</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+								<xs:annotation>
+									<xs:documentation>Дата составления и номер документа</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ТипПериода" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Тип операционного периода. Возможные значения: 
+									1 - месяц,
+									2 - квартал,
+									3 - год</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:enumeration value="1"/>
+										<xs:enumeration value="2"/>
+										<xs:enumeration value="3"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ОперационныйПериод">
+								<xs:annotation>
+									<xs:documentation>Операционный период. 01.ХХ.ХХХХ – первое число месяца, следующее за отчетным периодом</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:date">
+										<xs:pattern value="\d{4}-\d{2}-01"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ОснованиеПлатежа" type="УТ:ТипНепустаяСтрока">
+								<xs:annotation>
+									<xs:documentation>Основание платежей. Указывается код процесса, в разрезе которого выполняется операция – код процесса из справочника НСИ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НаправлениеОперации">
+								<xs:annotation>
+									<xs:documentation>Направление операции. Возможные значения: 
+									0 - расходная, 
+									1 - приходная</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:enumeration value="0"/>
+										<xs:enumeration value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Организация" maxOccurs="4">
+								<xs:annotation>
+									<xs:documentation>Блок сведений о количестве организаций по типу в платежном реестре (итого).</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Тип">
+											<xs:annotation>
+												<xs:documentation>Тип организации. Возможные значения: УК, ГУК ВР, НПФ, ОПФР:</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:normalizedString">
+													<xs:enumeration value="УК"/>
+													<xs:enumeration value="ГУК ВР"/>
+													<xs:enumeration value="НПФ"/>
+													<xs:enumeration value="ОПФР"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Сумма" type="УТ:ТипДеньги">
+											<xs:annotation>
+												<xs:documentation>Общая сумма</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Количество" type="xs:nonNegativeInteger">
+											<xs:annotation>
+												<xs:documentation>Количество организаций</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ЗаписьППР" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Блок «Запись реестра проведенных платежей».</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="НомерПП" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Порядковый номер записи в реестре (НомерПП), начиная с «1»</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:choice>
+											<xs:sequence>
+												<xs:annotation>
+													<xs:documentation>Блок сведений о НПФ или УК</xs:documentation>
+												</xs:annotation>
+												<xs:element name="НаименованиеУК_НПФ" type="xs:normalizedString">
+													<xs:annotation>
+														<xs:documentation>Наименование организации. Указывается наименование УК или НПФ (формализованное)</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Портфель" type="xs:normalizedString" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Наименование инвестиционного портфеля</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="ИНН" type="УТ:ТипИНН" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>ИНН организации</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="НомерДоговора" type="УТ:ТипНепустаяСтрока" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Номер договора. Не заполняется, если тип организации «НПФ</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="Тип">
+													<xs:annotation>
+														<xs:documentation>Тип организации. Возможные значения: УК, ГУК ВР, НПФ:</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:normalizedString">
+															<xs:enumeration value="УК"/>
+															<xs:enumeration value="ГУК ВР"/>
+															<xs:enumeration value="НПФ"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+											</xs:sequence>
+											<xs:element name="КодТОПФР">
+												<xs:annotation>
+													<xs:documentation>Код территориального органа ПФР по классификатору НСИ. Заполняется либо это поле, либо блок «Блок сведений о НПФ или УК»</xs:documentation>
+												</xs:annotation>
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:pattern value="\d{6}"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:element>
+										</xs:choice>
+										<xs:element name="ПлатежныйДокумент" type="УТ:ТипРеквизитыДокумента" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Дата и номер платежного документа</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Контрагент">
+											<xs:annotation>
+												<xs:documentation>Сведения о контрагенте платежа</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Банк">
+														<xs:annotation>
+															<xs:documentation>Банк контрагента</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Наименование" type="УТ:ТипНепустаяСтрока">
+																	<xs:annotation>
+																		<xs:documentation>Наименование банка контрагента</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="БИК" type="УТ:ТипБИК">
+																	<xs:annotation>
+																		<xs:documentation>БИК банка</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="КС" type="УТ:ТипБанковскийСчет">
+																	<xs:annotation>
+																		<xs:documentation>Корреспондентский счет</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="ИННиКПП" type="УТ:ТипНН">
+																	<xs:annotation>
+																		<xs:documentation>ИНН и КПП банка</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="РСчет" type="УТ:ТипБанковскийСчет">
+														<xs:annotation>
+															<xs:documentation>Номер расчетного счета контрагента платежа</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="ПроведенныеПлатежи">
+											<xs:annotation>
+												<xs:documentation>Блок сведений о суммах проведенных платежей</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:group ref="НПФ:ГрСуммыСПН">
+														<xs:annotation>
+															<xs:documentation>Cведения о суммах проведенных платежей</xs:documentation>
+														</xs:annotation>
+													</xs:group>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="АФ:ТипСлужебнаяИнформация">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

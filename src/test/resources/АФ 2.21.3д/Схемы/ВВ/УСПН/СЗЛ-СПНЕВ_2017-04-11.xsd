@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВВ/УСПН/СЗЛ-СПНЕВ/2017-04-11" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" xmlns:АФ="http://пф.рф/АФ"
+          targetNamespace="http://пф.рф/ВВ/УСПН/СЗЛ-СПНЕВ/2017-04-11">
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../xmldsig_core_schema.xsd"/>
+	
+	<xs:annotation>
+		<xs:documentation>Список ЗЛ, для которых в отделения ПФР передаются СПН для осуществления единовременных выплат</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ СЗЛ-СПНЕВ (Список ЗЛ, для которых в отделения ПФР передаются СПН для осуществления единовременных выплат). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СЗЛ-СПНЕВ">
+					<xs:annotation>
+						<xs:documentation>Список ЗЛ, для которых в отделения ПФР передаются СПН для осуществления единовременных выплат</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Регион">
+								<xs:annotation>
+									<xs:documentation>Код региона</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Код" type="УТ:ТипКодРегионаПФР">
+											<xs:annotation>
+												<xs:documentation>Код региона</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Наименование" type="УТ:ТипНепустаяСтрока">
+											<xs:annotation>
+												<xs:documentation>Наименование региона</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Район">
+								<xs:annotation>
+									<xs:documentation>Код района</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Код">
+											<xs:annotation>
+												<xs:documentation>Код региона</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:normalizedString">
+													<xs:pattern value="\d{3}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="Наименование" type="УТ:ТипНепустаяСтрока">
+											<xs:annotation>
+												<xs:documentation>Наименование района</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Сведения">
+								<xs:annotation>
+									<xs:documentation>Блок сведений о получателях и суммах единовременной выплаты за счет СПН</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="СПНЕВ" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Блок сведений о получателе и сумме единовременной выплаты за счет СПН</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ЗЛ">
+														<xs:annotation>
+															<xs:documentation>Блок сведений о получателе</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="УТ:СтраховойНомер">
+																	<xs:annotation>
+																		<xs:documentation>Страховой номер индивидуального лицевого счета застрахованного лица</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="УТ:ФИО">
+																	<xs:annotation>
+																		<xs:documentation>ФИО получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="УТ:Пол">
+																	<xs:annotation>
+																		<xs:documentation>Пол получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:group ref="УТ:ГрДатаРождения">
+																	<xs:annotation>
+																		<xs:documentation>Дата рождения получателя</xs:documentation>
+																	</xs:annotation>
+																</xs:group>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Решение">
+														<xs:annotation>
+															<xs:documentation>Блок сведений о решении</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Дата" type="xs:date">
+																	<xs:annotation>
+																		<xs:documentation>Дата решения</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="Номер" type="УТ:ТипНепустаяСтрока">
+																	<xs:annotation>
+																		<xs:documentation>Номер решения</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="Вариант">
+																	<xs:annotation>
+																		<xs:documentation>Номер решения</xs:documentation>
+																	</xs:annotation>
+																	<xs:simpleType>
+																		<xs:restriction base="xs:normalizedString">
+																			<xs:enumeration value="УСТН"/>
+																			<xs:enumeration value="ДОПЛ"/>
+																			<xs:enumeration value="ПРОД"/>
+																		</xs:restriction>
+																	</xs:simpleType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="СуммаЕВ" type="УТ:ТипДеньги">
+														<xs:annotation>
+															<xs:documentation>Сумма ЕВ (сумма, профинансированная по решению)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="НаименованиеУК" type="УТ:ТипНепустаяСтрока">
+														<xs:annotation>
+															<xs:documentation>Наименование управляющей компании</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Портфель" type="УТ:ТипНепустаяСтрока" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Наименование инвестиционного портфеля</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="СуммаЕВВсего" type="УТ:ТипДеньги">
+											<xs:annotation>
+												<xs:documentation>Всего сумма ЕВ по району</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="КоличествоПолучателей" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Всего количество получателей ЕВ по району</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="АФ:ТипСлужебнаяИнформация">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

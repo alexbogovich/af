@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:НВП="http://пф.рф/НВП/2017-08-21" xmlns:УТ2="http://пф.рф/УТ/2017-08-21" targetNamespace="http://пф.рф/НВП/2017-08-21" elementFormDefault="qualified">
+	
+	<xs:import namespace="http://пф.рф/УТ/2017-08-21" schemaLocation="УнифТипы_2017-08-21.xsd" />
+	<!--
+		Типы данных, группы элементов, имеющие отношение к документам назначения и выплаты пенсии
+ -->
+	<xs:simpleType name="ТипВидВыплаты">
+		<xs:annotation>
+			<xs:documentation>Тип, используемый для описания возможных видов выплаты.
+					ЕВ - Единовременная выплата за счет всех источников;
+					ЕВО - Единовременная выплата за счет страховых взносов на ОПС;
+					НП - Накопительная пенсия за счет средств всех видов средств пенсионных накоплений (в случае если в соответствии с частью 2 статьи 3 Федерального закона от 30.11.2011 N 360-ФЗ "О порядке финансирования выплат за счет средств пенсионных накоплений" застрахованное лицо приняло решение о включении средств ДСВ, СОФИН, МСК и прочих средств пенсионных накоплений в состав накопительной пенсии);
+					НОПС - Накопительная пенсия за счет ОПС;
+					СПВ - Срочная пенсионная выплата (в случае если в соответствии с частью 2 статьи 3 Федерального закона от 30.11.2011 N 360-ФЗ "О порядке финансирования выплат за счет средств пенсионных накоплений" застрахованное лицо приняло решение о включении средств ДСВ, СОФИН, МСК и прочих средств пенсионных накоплений в состав срочной пенсионной выплаты)
+					ЕВДМ – Единовременная выплата за счет средств ДСВ, СОФН и МСК;
+					ВП – Выплата правопреемникам.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ЕВ">
+				<xs:annotation>
+					<xs:documentation>Единовременная выплата за счет всех взносов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ЕВО">
+				<xs:annotation>
+					<xs:documentation>Единовременная выплата за счет взносов ОПС</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ЕВДМ">
+				<xs:annotation>
+					<xs:documentation>Единовременная выплата за счет средств ДСВ, СОФН и МСК</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="НП">
+				<xs:annotation>
+					<xs:documentation>Накопительная часть трудовой пенсии за счет всех взносов</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="НОПС">
+				<xs:annotation>
+					<xs:documentation>Накопительная часть трудовой пенсии за счет взносов ОПС</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="СПВ">
+				<xs:annotation>
+					<xs:documentation>Срочная пенсионная выплата</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ВП">
+				<xs:annotation>
+					<xs:documentation>Выплата правопреемникам.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="ТипВариантРешения">
+		<xs:annotation>
+			<xs:documentation>Вариант решения о выплате
+			ОТКЗ – отказ в установлении,
+			УСТН - установление,
+			КОРР - корректировка,
+			ДОПЛ – доплата,
+			ПРОС - приостановление,
+			ВОЗБ - возобновление,
+			ПРЕК – прекращение,
+			ВОСТ – восстановление,
+			ПРОД – продление НПФ
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ОТКЗ">
+				<xs:annotation>
+					<xs:documentation>Отказ в установлении</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="УСТН">
+				<xs:annotation>
+					<xs:documentation>Установление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="КОРР">
+				<xs:annotation>
+					<xs:documentation>Корректировка</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ДОПЛ">
+				<xs:annotation>
+					<xs:documentation>Доплата</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРОС">
+				<xs:annotation>
+					<xs:documentation>Приостановление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ВОЗБ">
+				<xs:annotation>
+					<xs:documentation>Возобновление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРЕК">
+				<xs:annotation>
+					<xs:documentation>Прекращение</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ВОСТ">
+				<xs:annotation>
+					<xs:documentation>Восстановление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРОД">
+				<xs:annotation>
+					<xs:documentation>Продление НПФ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ТипВидПовышенияФВ">
+		<xs:annotation>
+			<xs:documentation>Вид повышения при указании размера страховой пенсии суммарно с размером фиксированной выплаты с повышениями. Возможные значения: 
+				1 - «повышения(ий) фиксированной выплаты к страховой пенсии»,
+				2 - «повышения(ий) фиксированной выплаты к страховой пенсии, дополнительного увеличения повышения(ий) фиксированной выплаты к страховой пенсии»</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ТипВидПенсионногоДействия">
+		<xs:annotation>
+			<xs:documentation>Вид пенсионного действия. Возможные значения: 
+			ПЕНС - новое назначение пенсии
+			ПРСЧ - перерасчет пенсии
+			ОТКЗ - отказ от страховой пенсии
+			ОТКН - конец периода отказа от СЧ пенсии
+			ВОСТ – восстановление (новое назначение) страховой пенсии (переход с ИНВЛ на СТАР)
+			ДПВЛ - назначение доли пенсии повыслуги лет
+			КРСЧ - корректировка 1 августа
+			КР09 - корректировка на 01.08.2009
+			КРПК – расчет РПК на 31.12.2014 (конец РПК)
+			СТОП - прекращение пенсии
+			ПРБЗ - перерасчет 1 августа
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ПЕНС">
+				<xs:annotation>
+					<xs:documentation>Новое назначение пенсии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРСЧ">
+				<xs:annotation>
+					<xs:documentation>Перерасчет пенсии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ОТКЗ">
+				<xs:annotation>
+					<xs:documentation>Отказ от страховой пенсии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ОТКН">
+				<xs:annotation>
+					<xs:documentation>Конец периода отказа от СЧ пенсии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ВОСТ">
+				<xs:annotation>
+					<xs:documentation>Восстановление (новое назначение) страховой пенсии (переход с ИНВЛ на СТАР)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ДПВЛ">
+				<xs:annotation>
+					<xs:documentation>Назначение доли пенсии повыслуги лет</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="КРСЧ">
+				<xs:annotation>
+					<xs:documentation>Корректировка 1 августа</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="КР09">
+				<xs:annotation>
+					<xs:documentation>Корректировка на 01.08.2009</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="КРПК">
+				<xs:annotation>
+					<xs:documentation>Расчет РПК на 31.12.2014 (конец РПК)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="СТОП">
+				<xs:annotation>
+					<xs:documentation>Прекращение пенсии</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРБЗ">
+				<xs:annotation>
+					<xs:documentation>Перерасчет 1 августа</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="ВыплатноеДело" type="УТ2:ТипНепустаяСтрока">
+		<xs:annotation>
+			<xs:documentation>Номер выплатного дела гражданина.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+
+	<xs:group name="ГрПериодНазначения">
+		<xs:annotation>
+			<xs:documentation>Даты, с которой и по которую назначена пенсия или иная выплата</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ДатаС" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Дата, с которой назначена пенсия или иная выплата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ДатаПо" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Дата, по которую назначена пенсия или иная выплата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="По" minOccurs="0" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Значение "По". Возможные значения: бессрочно, по достижению 18 лет, по достижению возраста 23 лет, по достижению возраста 25 лет, достижению ребенком возраста 14 лет и пр.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:simpleType name="ТипТипЗапроса">
+		<xs:annotation>
+			<xs:documentation>Тип запроса. Возможные значения:			
+			ПЕНС - Запрос для назначения трудовой пенсии,
+			ПРСЧ - Запрос для перерасчета трудовой пенсии на 1 августа, для уточнения страховых пенсий с 01.01.2015,
+			ПЕНК - Запрос в случае необходимости проведения корректировки назначенной ранее трудовой пенсии,
+			КРСЧ - Запрос для беззаявительного перерасчета трудовой пенсии на 1 августа, для уточнения страховых пенсий с 01.01.2015,
+			КОНВ - Запрос для получения выписки по конвертации (выписка со сведениями до 2002 года),
+			РАСЧ - Запрос в случае необходимости расчета размера трудовой пенсии на дату пенсионного действия с целью определения права на установление выплаты за счет средств пенсионных накоплений,
+			СОЦД - Запрос в случае необходимости получения выписки для определения периодов работы пенсионера,
+			СДПР - Запрос для получения выписки по запросам судебных приставов,
+			ПРБЧ - Запрос для перерасчета базовой части трудовой пенсии пенсионерам, имеющим северный стаж
+			НПЕН - Запрос на установление первой выплаты за счет СПН (НЧ, СПВ, ЕВ СПН)
+			НКОР - Запрос на корректировку выплаты за счет СПН (за счет ранее не учтенных СПН по ранее учтенным источникам ОПС и/или ДСВ и МСК)
+			НДОП - Запрос на доплату к ЕВ за счёт СПН  
+			НВТР - Запрос на установление второй/повторной выплаты СПН (за счет СПН по ранее не учтенным источникам ОПС и/или ДСВ и МСК)
+			НПРД - Запрос на продолжение выплаты за счет СПН, прекращенной в НПФ в связи с ликвидацией
+			НИНФ - Запрос информации о действиях ПФР по осуществлению выплаты за счет СПН
+			ИДСВ - Запрос на получение Краткой выписки из специальной части индивидуального лицевого счета застрахованного лица о его дополнительных страховых взносах на накопительную пенсию
+			НПРВ - Запрос на получение Выписки из специальной части индивидуального лицевого счета застрахованного лица для назначения правопреемникам умершего застрахованного лица выплаты за счет средств пенсионных накоплений
+			ИДОК - Запрос на получение Перечня сведений, содержащихся на индивидуальном лицевом счете застрахованного лица</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ПЕНС"/>
+			<xs:enumeration value="ПРСЧ"/>
+			<xs:enumeration value="ПЕНК"/>
+			<xs:enumeration value="КРСЧ"/>
+			<xs:enumeration value="КОНВ"/>
+			<xs:enumeration value="РАСЧ"/>
+			<xs:enumeration value="СОЦД"/>
+			<xs:enumeration value="СДПР"/>
+			<xs:enumeration value="ПРБЧ"/>
+			<xs:enumeration value="НПЕН"/>
+			<xs:enumeration value="НКОР"/>
+			<xs:enumeration value="НДОП"/>
+			<xs:enumeration value="НВТР"/>
+			<xs:enumeration value="НПРД"/>
+			<xs:enumeration value="НИНФ"/>
+			<xs:enumeration value="ИДСВ"/>
+			<xs:enumeration value="НПРВ"/>
+			<xs:enumeration value="ИДОК"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

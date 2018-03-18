@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/СК-ПФР/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:СК-ПФР2="http://пф.рф/ВсВО/НПФ/СК-ПФР/2017-08-09" xmlns:ИНПФ2="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/СК-ПФР/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" schemaLocation="ТипыИсходящие_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Сообщение-квитанция</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ СК-ПФР (Сообщение-квитанция). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СК-ПФР">
+					<xs:annotation>
+						<xs:documentation>Сообщение-квитанция</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ИНПФ2:ТипДокументНПФ">
+								<xs:sequence>
+									<xs:element name="Тип">
+										<xs:annotation>
+											<xs:documentation>Тип квитанции. Возможные значения:
+														1 - Сообщение-квитанция, 
+														2 - Квитанция об отражении в ЦБД</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:integer">
+												<xs:enumeration value="1"/>
+												<xs:enumeration value="2"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="ПроверяемыйДокумент">
+										<xs:annotation>
+											<xs:documentation>Сведения о проверенном документе-основании</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Тип">
+													<xs:annotation>
+														<xs:documentation>Код проверяемого документа-основания</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:normalizedString">
+															<xs:enumeration value="РНПФ"/>
+															<xs:enumeration value="РНПФ-А"/>
+															<xs:enumeration value="РНПФ-У"/>
+															<xs:enumeration value="РНПФ-С"/>
+															<xs:enumeration value="РНПФ-УМ"/>
+															<xs:enumeration value="РНПФ-М"/>
+															<xs:enumeration value="УОПС-П"/>
+															<xs:enumeration value="УОПС-ПИ"/>
+															<xs:enumeration value="УСПН-З"/>
+															<xs:enumeration value="УОПС-ПП"/>
+															<xs:enumeration value="ЗСПННПФ "/>
+															<xs:enumeration value="УОПС-С"/>
+															<xs:enumeration value="АНПФ"/>
+															<xs:enumeration value="ССПН-НПФ"/>
+															<xs:enumeration value="ЗННЧ"/>
+															<xs:enumeration value="ИДСПН"/>
+															<xs:enumeration value="РСПННПФ"/>
+															<xs:enumeration value="АСЛС"/>
+															<xs:enumeration value="ПСПН-НПФ"/>
+															<xs:enumeration value="ИПСПН-НПФ"/>
+															<xs:enumeration value="СФВ"/>
+															<xs:enumeration value="ВСПН-П"/>
+															<xs:enumeration value="УОВМ"/>
+															<xs:enumeration value="УЗР"/>
+															<xs:enumeration value="РНПФ-НП"/>
+															<xs:enumeration value="РНПФ-СПВ"/>
+															<xs:enumeration value="ИНСПН-В"/>
+															<xs:enumeration value="ИНСПН"/>
+															<xs:enumeration value="РНПФ-ЕВ"/>
+															<xs:enumeration value="ЗГС"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="НомерДокументаОрганизации">
+													<xs:annotation>
+														<xs:documentation>Номер документа-основания, присвоенный организацией-составителем</xs:documentation>
+													</xs:annotation>
+													<xs:simpleType>
+														<xs:restriction base="xs:normalizedString">
+															<xs:minLength value="1"/>
+															<xs:maxLength value="5"/>
+															<xs:pattern value="\d{1,5}"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:element>
+												<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+													<xs:annotation>
+														<xs:documentation>Дата и номер документа-основания</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Обработан" type="xs:boolean">
+										<xs:annotation>
+											<xs:documentation>Статус сообщения о результате обработки : 
+												1 - Документ обработан , 
+												0 - Документ с ошибкой</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="СписокОшибокДокумента" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Список общих ошибок, относящихся к документу в целом</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Ошибка" type="НПФ2:ТипРасхождение" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об ошибке</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Уведомление" type="xs:string" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Дополнительное сообщение-уведомление, например: "Количество найденных ошибок превысило пороговое значение 100"</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="СписокСведений" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Перечень ошибочных сведений о застрахованных лицах из проверяемого документа с перечислением ошибок. Не указывается, в случае, если документ обработан без ошибок.</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="НомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ВходящийНомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи по порядку в проверяемом документе</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ЗЛ" type="НПФ2:ТипСведенияЗЛ" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СписокОшибок">
+																<xs:annotation>
+																	<xs:documentation>Список ошибок, относящихся к персонифицированной части, в соответствии с классификатором внешних/ внутренних ошибок</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Ошибка" type="НПФ2:ТипРасхождение" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Сведения об ошибке</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерПП">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="СК-ПФР2:Запись/СК-ПФР2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+										<xs:unique name="УникальныйВходящийНомерПП">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="СК-ПФР2:Запись/СК-ПФР2:ВходящийНомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="РеквизитыРаспоряжения" type="УТ:ТипРеквизитыДокумента" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Дата и номер распоряжения ПФР, которым утверждена передача денежных средств</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+									<xs:element name="КоличествоОшибок" type="xs:nonNegativeInteger" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Количество ошибок</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

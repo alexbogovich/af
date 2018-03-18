@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/РНПФ-С/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:РНПФ-С2="http://пф.рф/ВсВО/НПФ/РНПФ-С/2017-08-09" xmlns:ВНПФ2="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/РНПФ-С/2017-08-09"
+           xmlns:АФ="http://пф.рф/АФ">
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" schemaLocation="ТипыВХОДЯЩИЕ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Реестр ЗЛ, СПН которых переданы в ПФР на основании решения суда</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ РНПФ-С (Реестр ЗЛ, СПН которых переданы в ПФР на основании решения суда). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="РНПФ-С">
+					<xs:annotation>
+						<xs:documentation>Реестр ЗЛ, СПН которых переданы в ПФР на основании решения суда</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:annotation>
+							<xs:documentation>Финансовый реестр ЗЛ с информацией о суммах</xs:documentation>
+						</xs:annotation>
+						<xs:sequence>
+							<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+								<xs:annotation>
+									<xs:documentation>Дата и номер реестра</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НПФ" type="НПФ2:ТипСведенияНПФ">
+								<xs:annotation>
+									<xs:documentation>Сведения о НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ПлатежныйДокумент" type="УТ:ТипРеквизитыДокумента" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Дата и номер платежного документа</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СписокСведений">
+								<xs:annotation>
+									<xs:documentation>Перечень сведений о застрахованных лицах и их суммах СПН, переданных НПФ в ПФР</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Запись" type="ВНПФ2:ТипЗаписьРеестра" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения об одной записи (одном ЗЛ) финансового реестра</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+								<xs:unique name="УникальныйНомерПП">
+									<xs:annotation>
+										<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="РНПФ-С2:Запись/ВНПФ2:НомерПП"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+								<xs:unique name="УникальныйСНИЛС">
+									<xs:annotation>
+										<xs:documentation>В пределах файла страховой номер застрахованного лица должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="РНПФ-С2:Запись/ВНПФ2:ЗЛ/УТ:СтраховойНомер"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+							</xs:element>
+							<xs:element name="Итого">
+								<xs:annotation>
+									<xs:documentation>Строка Итого реестра</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:group ref="НПФ2:ГрСуммыРеестра">
+											<xs:annotation>
+												<xs:documentation>Группа элементов с сведениями об итоговых по реестру переданных суммах</xs:documentation>
+											</xs:annotation>
+										</xs:group>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.2.30'
+    ext.junit_jupiter_version = '5.0.3'
 
     repositories {
         mavenCentral()
@@ -24,8 +25,15 @@ dependencies {
     compile "org.apache.poi:poi:3.17"
     compile "org.apache.poi:poi-ooxml:3.17"
     compile "xerces:xercesImpl:2.11.0"
-    compile "io.github.microutils:kotlin-logging:1.5.4"
-    compile "org.slf4j:slf4j-simple:1.6.1"
+    compile "org.codehaus.woodstox:stax2-api:4.0.0"
+
+
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    testCompile "org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version"
+    testCompile "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
+    testCompile "org.assertj:assertj-core:3.9.0"
+    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
 }
 
 compileKotlin {

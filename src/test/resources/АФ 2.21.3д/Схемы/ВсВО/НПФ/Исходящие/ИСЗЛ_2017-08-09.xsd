@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/ИСЗЛ/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:ИСЗЛ2="http://пф.рф/ВсВО/НПФ/ИСЗЛ/2017-08-09" xmlns:ИНПФ2="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/ИСЗЛ/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" schemaLocation="ТипыИсходящие_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Информация о смерти ЗЛ, осуществлявших формирование НЧТП через НПФ</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ ИСЗЛ (Информация о смерти ЗЛ, осуществлявших формирование НЧТП через НПФ). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ИСЗЛ">
+					<xs:annotation>
+						<xs:documentation>Информация о смерти ЗЛ, осуществлявших формирование НЧТП через НПФ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ИНПФ2:ТипДокументНПФ">
+								<xs:sequence>
+									<xs:element name="Раздел1" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 1. Перечень сведений о смерти застрахованных лиц, осуществлявших формирование накопительной части трудовой пенсии через НПФ</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="НомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ЗЛ" type="НПФ2:ТипСведенияЗЛ">
+																<xs:annotation>
+																	<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ДатаСмерти" type="xs:date">
+																<xs:annotation>
+																	<xs:documentation>Дата смерти</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ДоговорНеВступилВсилу" minOccurs="0" type="xs:boolean">
+																<xs:annotation>
+																	<xs:documentation>Признак вступления/невступления договора в силу. 1 - не вступил, 0 - вступил. В случае отсутствия элемента полагается, что договор вступил в силу.</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="НаправленМСКнаНП" minOccurs="0" type="xs:boolean">
+																<xs:annotation>
+																	<xs:documentation>Признак направления средств МСК на накопительную часть пенсии. 1 - направлены, 0 - не направлены.</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 1</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР1">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="ИСЗЛ2:Запись/ИСЗЛ2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="Раздел2" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 2. Перечень сведений о смерти застрахованных лиц, умерших до вступления в силу договоров об обязательном пенсионном страховании, чьи средства пенсионных накоплений подлежат к возврату в Пенсионный фонд Российской Федерации в соответствии с пунктом 3 статьи 36.4 Федерального закона от 07.05.1998 № 75-ФЗ "О негосударственных пенсионных фондах"</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="НомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ЗЛ" type="НПФ2:ТипСведенияЗЛ">
+																<xs:annotation>
+																	<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ДатаСмерти" type="xs:date">
+																<xs:annotation>
+																	<xs:documentation>Дата смерти</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СуммаСПН" type="УТ:ТипДеньги">
+																<xs:annotation>
+																	<xs:documentation>Сумма СПН</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="НаправленМСКнаНП" minOccurs="0" type="xs:boolean">
+																<xs:annotation>
+																	<xs:documentation>Признак направления средств МСК на накопительную часть пенсии. 1 - направлены, 0 - не направлены.</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 1</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="СуммаИтого" type="УТ:ТипДеньги" minOccurs="0">
+													<xs:annotation>
+														<xs:documentation>Сумма СПН ИТОГО по всем застрахованным лицам по разделу</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР2">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="ИСЗЛ2:Запись/ИСЗЛ2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

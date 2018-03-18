@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/СФС-НПФ/2017-08-09" xmlns:СФС-НПФ2="http://пф.рф/ВсВО/НПФ/СФС-НПФ/2017-08-09"
+           xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/СФС-НПФ/2017-08-09" xmlns:АФ="http://пф.рф/АФ">
+
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Сведения от НПФ о фактах смерти ЗЛ</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ СФС-НПФ (Сведения от НПФ о фактах смерти ЗЛ). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СФС-НПФ">
+					<xs:annotation>
+						<xs:documentation>Сведения от НПФ о фактах смерти ЗЛ</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+						<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+								<xs:annotation>
+									<xs:documentation>Дата и номер сведений</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НПФ" type="НПФ2:ТипСведенияНПФ">
+								<xs:annotation>
+									<xs:documentation>Сведения о НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СписокСведений">
+								<xs:annotation>
+									<xs:documentation>Перечень сведений о фактах смерти застрахованных лиц</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Запись" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения об одной записи (сведений по одному ЗЛ)</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерПП" type="xs:positiveInteger">
+														<xs:annotation>
+															<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ЗЛ">
+														<xs:annotation>
+															<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="УТ:ФИО">
+																	<xs:annotation>	
+																		<xs:documentation>Фамилия, имя, отчество</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="УТ:СтраховойНомер">
+																	<xs:annotation>
+																		<xs:documentation>Страховой номер</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:group ref="УТ:ГрДатаРождения">
+																	<xs:annotation>
+																		<xs:documentation>Дата рождения</xs:documentation>
+																	</xs:annotation>
+																</xs:group>
+																<xs:element ref="УТ:МестоРождения">
+																	<xs:annotation>
+																		<xs:documentation>Сведения о месте рождения застрахованного лица</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="ДатаСмерти" type="xs:date">
+														<xs:annotation>
+															<xs:documentation>Дата смерти</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="АктСмерти" type="УТ:ТипРеквизитыДокумента">
+														<xs:annotation>
+															<xs:documentation>Реквизиты составления записи акта смерти (дата и номер)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="МестоГосРегистрации" type="УТ:ТипНепустаяСтрока">
+														<xs:annotation>
+															<xs:documentation>Сведения о месте государственной регистрации</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Правопреемники" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Перечень сведений о правопреемниках</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Правопреемник" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>ФИО правопреемника и телефоны для связи</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element ref="УТ:ФИО">
+																				<xs:annotation>
+																					<xs:documentation>Фамилия, имя, отчество</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element ref="УТ:Телефоны">
+																				<xs:annotation>
+																					<xs:documentation>Телефоны для связи</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+								<xs:unique name="УникальныйНомерПП">
+									<xs:annotation>
+										<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="СФС-НПФ2:Запись/СФС-НПФ2:НомерПП"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+							</xs:element>
+							<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+								<xs:annotation>
+									<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="КонтактноеЛицо" type="УТ:ТипДолжностноеЛицо">
+								<xs:annotation>
+									<xs:documentation>ФИО, должность и номер телефона контактного лица НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

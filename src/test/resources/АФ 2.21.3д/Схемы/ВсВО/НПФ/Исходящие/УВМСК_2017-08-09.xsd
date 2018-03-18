@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/УВМСК/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:УВМСК2="http://пф.рф/ВсВО/НПФ/УВМСК/2017-08-09" xmlns:ИНПФ2="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/УВМСК/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" schemaLocation="ТипыИсходящие_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Уведомление на возврат МСК в ПФР в связи с отказом ЗЛ от направления данных средств на формирование НП</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ УВМСК (Уведомление на возврат МСК в ПФР в связи с отказом ЗЛ от направления данных средств на формирование НП). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="УВМСК">
+					<xs:annotation>
+						<xs:documentation>Уведомление на возврат МСК в ПФР в связи с отказом ЗЛ от направления данных средств на формирование НП</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+								<xs:annotation>
+									<xs:documentation>Дата формирования и номер уведомления</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НПФ" type="НПФ2:ТипСведенияНПФ">
+								<xs:annotation>
+									<xs:documentation>Сведения о НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СписокСведений">
+								<xs:annotation>
+									<xs:documentation>Перечень сведений о застрахованных лицах, суммах их средств МСК, об отказе в возврате которых уведомляется ПФР</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Запись" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения об одной записи (сведений по одному ЗЛ) уведомления</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерПП" type="xs:positiveInteger">
+														<xs:annotation>
+															<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ЗЛ" type="НПФ2:ТипЗастрахованноеЛицо">
+														<xs:annotation>
+															<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="МСК" type="НПФ2:ТипСуммаИД" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Суммы средства, переданных в рамках 256-ФЗ: Сумма средств (части средств) материнского (семейного) капитала, направленная на формирование накопительной части трудовой пенсии (руб., коп.) и инвестиционный доход/убыток нарастающим итогом (руб., коп.)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Всего" type="УТ:ТипДеньги">
+														<xs:annotation>
+															<xs:documentation>Указывается итоговая сумма средств (части средств) материнского (семейного ) капитала ЗЛ, направленная на формирование накопительной части трудовой пенсии с учетом ИД</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="РеквизитыМЗОП" type="УТ:ТипРеквизитыДокумента">
+														<xs:annotation>
+															<xs:documentation>Дата и номер заявления застрахованного лица об отказе от направления средств (части средств) МСК на формирование накопительной пенсии</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+								<xs:unique name="УникальныйНомерПП">
+									<xs:annotation>
+										<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="УВМСК2:Запись/УВМСК2:НомерПП"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+							</xs:element>
+							<xs:element name="Итого">
+								<xs:annotation>
+									<xs:documentation>Строка Итого уведомления</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="МСК" type="НПФ2:ТипСуммаИД">
+											<xs:annotation>
+												<xs:documentation>Суммы средств по всем ЗЛ, переданных в рамках 256-ФЗ: Сумма средств (части средств) материнского (семейного) капитала, направленная на формирование накопительной части трудовой пенсии (руб., коп.) и инвестиционный доход/убыток нарастающим итогом (руб., коп.)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="Всего" type="УТ:ТипДеньги">
+											<xs:annotation>
+												<xs:documentation>Указывается итоговая сумма средств (части средств) материнского (семейного ) капитала по всем ЗЛ, направленная на формирование накопительной части трудовой пенсии с учетом ИД</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" xmlns:АФ="http://пф.рф/АФ" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" 
+			xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09"
+           targetNamespace="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" elementFormDefault="qualified">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="ru">Типы данных для xml-файлов входящих документов НПФ</xs:documentation>
+	</xs:annotation>
+
+	<xs:group name="ГрСуммыВыплаты">
+		<xs:annotation>
+			<xs:documentation>Группа элементов со сведениями о суммах ОПС, ДСВ, софинансирования, МСК</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ОПС" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма выплаты ОПС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ДСВ" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма выплаты  ДСВ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="СОФН" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма выплаты софинансирования</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="МСК" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма выплаты МСК</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="СПН" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма выплаты СПН</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:complexType name="ТипЗаписьРеестра">
+		<xs:annotation>
+			<xs:documentation>Сведения об одной записи реестра</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="НомерПП" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ЗЛ" type="НПФ2:ТипЗастрахованноеЛицо">
+				<xs:annotation>
+					<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="НПФ2:ГрСуммыРеестра">
+				<xs:annotation>
+					<xs:documentation>Группа элементов с сведениями о переданных суммах</xs:documentation>
+				</xs:annotation>
+			</xs:group>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипЗаписьАкта">
+		<xs:annotation>
+			<xs:documentation>Сведения об одной записи реестра</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="НомерПП" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ЗЛ" type="НПФ2:ТипЗастрахованноеЛицо">
+				<xs:annotation>
+					<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:group ref="ГрСуммыАкта">
+				<xs:annotation>
+					<xs:documentation>Группа элементов с сведениями о переданных суммах</xs:documentation>
+				</xs:annotation>
+			</xs:group>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:group name="ГрСуммыАкта">
+		<xs:annotation>
+			<xs:documentation>Группа элементов со сведениями о ЗЛ, общими для всех реестров</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="СуммыПереданные" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Группа элементов со сведениями о переданных суммах</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="НПФ2:ГрСуммыСПН">
+							<xs:annotation>
+								<xs:documentation>Суммы средств, переданных в ПФР</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ВыплатнойРезерв" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма средств, переданных в выплатной резерв (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="РезервСрочныеВыплаты" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма средств, переданных в резерв под срочные выплаты (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ЕВ" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма средств, переданных на финансирование единовременной выплаты (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ВсегоУчтено" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Всего средств пенсионных накоплений ЗЛ, учтенных на счете и направленных на финансирование выплат</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="НазначенныеВыплаты">
+				<xs:annotation>
+					<xs:documentation>Сведения о выплатах, назначенных застрахованному лицу</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ЕВ" type="УТ:ТипДеньги" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Единовременная выплата, руб.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="НЧТП" type="УТ:ТипДеньги" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Накопительная часть трудовой пенсии, назначенная за счет всех средств ЗЛ, руб./мес.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="НЧТПОПС" type="УТ:ТипДеньги" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Назначенные выплаты: Накопительная часть трудовой пенсии, назначенная за счет взносов ОПС, руб./мес.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="СПВ" type="УТ:ТипДеньги" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Срочная пенсионная выплата, руб./мес.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="НомерПП" type="xs:positiveInteger" minOccurs="0">
+							<xs:annotation>
+								<xs:documentation>Порядковый номер выплаты. Не указывается в строке ИТОГО.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/СФВ/2017-08-09" xmlns:ВНПФ2="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09"
+           xmlns:СФВ2="http://пф.рф/ВсВО/НПФ/СФВ/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" targetNamespace="http://пф.рф/ВсВО/НПФ/СФВ/2017-08-09" xmlns:АФ="http://пф.рф/АФ">
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыВходящие/2017-08-09" schemaLocation="ТипыВХОДЯЩИЕ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Сведения о фактически произведенных выплат за счет средств пенсионных накоплений, полученные от негосударственного пенсионного фонда</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ СФВ (Сведения о фактически произведенных выплат за счет средств пенсионных накоплений, полученные от негосударственного пенсионного фонда). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СФВ">
+					<xs:annotation>
+						<xs:documentation>Сведения о фактически произведенных выплат за счет средств пенсионных накоплений, полученные от негосударственного пенсионного фонда</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+								<xs:annotation>
+									<xs:documentation>Дата и номер сведений</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НПФ" type="НПФ2:ТипСведенияНПФ">
+								<xs:annotation>
+									<xs:documentation>Сведения о НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="СписокСведений">
+								<xs:annotation>
+									<xs:documentation>Перечень сведений о застрахованных лицах и сумм фактически произведенных им выплат за счет средств пенсионных накоплений</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Запись" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Сведения об одной записи (одном ЗЛ) сведений</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="НомерПП" type="xs:positiveInteger">
+														<xs:annotation>
+															<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ЗЛ">
+														<xs:annotation>
+															<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="УТ:ФИО">
+																	<xs:annotation>
+																		<xs:documentation>ФИО застрахованного лица</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="УТ:СтраховойНомер">
+																	<xs:annotation>
+																		<xs:documentation>Страховой номер</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:group ref="УТ:ГрДатаРождения">
+																	<xs:annotation>
+																		<xs:documentation>Дата рождения застрахованного лица</xs:documentation>
+																	</xs:annotation>
+																</xs:group>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="РеквизитыРешения" type="УТ:ТипРеквизитыДокумента">
+														<xs:annotation>
+															<xs:documentation>Дата и номер решения о выплате</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="КодВыплаты" type="УТ:ТипВидВыплаты">
+														<xs:annotation>
+															<xs:documentation>Код выплаты</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="НомерППВыплаты" type="xs:nonNegativeInteger">
+														<xs:annotation>
+															<xs:documentation>Порядковый номер выплаты (кол-во месяцев, за которые осуществляется выплата в первом месяце)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="СуммыВыплат">
+														<xs:annotation>
+															<xs:documentation>Сумма выплаченная</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:group ref="ВНПФ2:ГрСуммыВыплаты">
+																	<xs:annotation>
+																		<xs:documentation>Суммы фактических выплат в разрезе ОПС, ДСВ, софинансирования, МСК</xs:documentation>
+																	</xs:annotation>
+																</xs:group>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="ДатаВыплаты" type="xs:date">
+														<xs:annotation>
+															<xs:documentation>Дата выплаты</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="ПерваяВыплата" type="xs:boolean">
+														<xs:annotation>
+															<xs:documentation>Признак, является ли выплата первой: 1 - да, 0 - нет.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+								<xs:unique name="УникальныйНомерПП">
+									<xs:annotation>
+										<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="СФВ2:Запись/СФВ2:НомерПП"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+								<xs:unique name="УникальныйСНИЛС">
+									<xs:annotation>
+										<xs:documentation>В пределах файла страховой номер застрахованного лица должен быть уникален</xs:documentation>
+									</xs:annotation>
+									<xs:selector xpath="СФВ2:Запись/СФВ2:ЗЛ/УТ:СтраховойНомер"/>
+									<xs:field xpath="."/>
+								</xs:unique>
+							</xs:element>
+							<xs:element name="Итого">
+								<xs:annotation>
+									<xs:documentation>Строка ИТОГО, с суммами выплаченными по всем застрахованным лицам из сведений</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+											<xs:annotation>
+												<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:group ref="ВНПФ2:ГрСуммыВыплаты">
+											<xs:annotation>
+												<xs:documentation>Суммы фактических выплат в разрезе ОПС, ДСВ, софинансирования, МСК</xs:documentation>
+											</xs:annotation>
+										</xs:group>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Руководитель" type="НПФ2:ТипРуководитель">
+								<xs:annotation>
+									<xs:documentation>Сведения о руководителе НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Исполнитель" type="НПФ2:ТипИсполнитель">
+								<xs:annotation>
+									<xs:documentation>Сведения об исполнителе документа</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

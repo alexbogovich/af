@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           targetNamespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" elementFormDefault="qualified">
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="ru">Типы данных для xml-файлов исходящих документов НПФ</xs:documentation>
+	</xs:annotation>
+
+	<xs:complexType name="ТипДокументНПФ">
+		<xs:annotation>
+			<xs:documentation>Тип Документ НПФ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Реквизиты" type="УТ:ТипРеквизитыДокумента">
+				<xs:annotation>
+					<xs:documentation>Дата и номер документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="КодОснованияДокумента" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код основания документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="НПФ" type="НПФ2:ТипСведенияНПФ">
+				<xs:annotation>
+					<xs:documentation>Сведения о НПФ, в который направляется документ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Закон" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Закон</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ТипПричинаОтказа">
+		<xs:annotation>
+			<xs:documentation>Тип Причина отказа</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Код" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Код причины отказа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Наименование" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Наименование причины отказа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ГрСуммыВзносовЧФР">
+		<xs:annotation>
+			<xs:documentation>Суммы взносов в разрезе их видов (страховые взносы на ОПС, ДСВ, софинансирование, МСК) с суммами инвестиционного дохода и суммами чистого финансового результата (ЧФР)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="СВ" type="НПФ2:ТипСуммаИДЧФР">
+					<xs:annotation>
+						<xs:documentation>Сумма страховых взносов на ОПС</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ДСВ" type="НПФ2:ТипСуммаИДЧФР">
+					<xs:annotation>
+						<xs:documentation>Сумма взносов ДСВ</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СОФН" type="НПФ2:ТипСуммаИДЧФР">
+					<xs:annotation>
+						<xs:documentation>Сумма средств на софинансирование</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="МСК" type="НПФ2:ТипСуммаИДЧФР">
+					<xs:annotation>
+						<xs:documentation>Сумма средств МСК</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

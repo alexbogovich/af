@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" xmlns:АФ="http://пф.рф/АФ" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" targetNamespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09"
+           elementFormDefault="qualified">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../ТипыОбщие.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation xml:lang="ru">Типы данных для xml-файлов входящих документов НПФ</xs:documentation>
+	</xs:annotation>
+
+	<xs:complexType name="ТипСлужебнаяИнформацияНПФ">
+		<xs:annotation>
+			<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="АФ:GUID">
+				<xs:annotation>
+					<xs:documentation>Глобальный идентификатор электронного документа, присваиваемый составителем. Относится к зоне идентификации документа. Реализация спецификации стандарта http://www.ietf.org/rfc/rfc4122.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="АФ:ВОтветНа" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Глобальный идентификатор электронного документа, в ответ на который сформирован документ. Относится к зоне идентификации документа. Реализация спецификации стандарта http://www.ietf.org/rfc/rfc4122.txt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="АФ:ДатаВремя">
+				<xs:annotation>
+					<xs:documentation>Дата и время формирования электронного документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Составитель" type="УТ:ТипОрганизация">
+				<xs:annotation>
+					<xs:documentation>Сведения о составителе электронного документа</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="НомерДокументаОрганизации">
+				<xs:annotation>
+					<xs:documentation>Номер документа, присвоенный организацией-составителем</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:normalizedString">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="5"/>
+						<xs:pattern value="\d{1,5}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ЗаГод" type="xs:gYear">
+				<xs:annotation>
+					<xs:documentation>Год, за который составлен документ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ТипПериода" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Тип периода</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="НомерПериода" type="xs:integer" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Номер периода</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипСведенияЗЛ">
+		<xs:annotation>
+			<xs:documentation>Тип, использующйся для представления сведений об анкетных данных застрахованного лица и его СНИЛС</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="УТ:ФИО">
+				<xs:annotation>
+					<xs:documentation>Фамилия, имя, отчество застрахованного лица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="УТ:СтраховойНомер">
+				<xs:annotation>
+					<xs:documentation>СНИЛС застрахованного лица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ТипЗастрахованноеЛицо">
+		<xs:annotation>
+			<xs:documentation>Тип, использующйся для представления сведений об анкетных данных застрахованного лица, его СНИЛС и документе, удостоверяющем его личность</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:group ref="УТ:ГрАнкетныеДанные">
+				<xs:annotation>
+					<xs:documentation>Группа элементов для описания основных анкетных данных: ФИО, Пол, дата рождения</xs:documentation>
+				</xs:annotation>
+			</xs:group>
+			<xs:element ref="УТ:МестоРождения">
+				<xs:annotation>
+					<xs:documentation>Сведения о месте рождения застрахованного лица</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="УТ:СтраховойНомер">
+				<xs:annotation>
+					<xs:documentation>Страховой номер</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="УТ:УдостоверяющийДокумент" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Документ, удостоверяющий личность</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипСведенияНПФ">
+		<xs:annotation>
+			<xs:documentation>Тип, использующйся для представления кратких сведений об НПФ2: наименование, ИНН</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Наименование" type="УТ:ТипНепустаяСтрока" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Полное наименование НПФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="НаименованиеФормализованное" type="УТ:ТипКрИмяОрг">
+				<xs:annotation>
+					<xs:documentation>Формализованное наименование НПФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИНН" type="УТ:ТипИНН">
+				<xs:annotation>
+					<xs:documentation>Индивидуальный номер налогоплательщика</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипРуководитель">
+		<xs:annotation>
+			<xs:documentation>Сведения о руководителе НПФ</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="УТ:ФИО">
+				<xs:annotation>
+					<xs:documentation>Фамилия, Имя, Отчество руководителя НПФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Должность" type="УТ:ТипНепустаяСтрока">
+				<xs:annotation>
+					<xs:documentation>Должность руководителя НПФ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипИсполнитель">
+		<xs:annotation>
+			<xs:documentation>Сведения об исполнителе документа</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="УТ:ФИО">
+				<xs:annotation>
+					<xs:documentation>Фамилия, Имя, Отчество исполнителя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="УТ:Телефон">
+				<xs:annotation>
+					<xs:documentation>Номер телефона исполнителя</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:group name="ГрСуммыСПН">
+		<xs:annotation>
+			<xs:documentation>Группа элементов со сведениями о суммах средств пенсионных накоплений, инвестиционных доходах в разрезе типа средств: страховые взносы на ОПС, ДСВ, софинансирование, средства МСК</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="СВ" type="ТипСуммаИД">
+				<xs:annotation>
+					<xs:documentation>Суммы средства, переданных в рамках 75-ФЗ: сумма средств страховых взносов (руб., коп.) и инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ДСВ" type="ТипСуммаИД">
+				<xs:annotation>
+					<xs:documentation>Суммы средства, переданных в рамках 56-ФЗ: сумма средств ДСВ застрахованного лица, взносов работодателя (руб., коп.) и инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="СОФН" type="ТипСуммаИД">
+				<xs:annotation>
+					<xs:documentation>Суммы средства, переданных в рамках 56-ФЗ: сумма средств на софинансирование (руб., коп.) и инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="МСК" type="ТипСуммаИД">
+				<xs:annotation>
+					<xs:documentation>Суммы средства, переданных в рамках 256-ФЗ: Сумма средств (части средств) материнского (семейного) капитала, направленная на формирование накопительной части трудовой пенсии (руб., коп.) и инвестиционный доход/убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ВсегоСПН" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Итоговая сумма СПН (ВСЕГО средств пенсионных накоплений застрахованного лица) (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ГрСуммыСПНЧФР">
+		<xs:annotation>
+			<xs:documentation>Суммы взносов в разрезе их видов (страховые взносы на ОПС, ДСВ, софинансирование, МСК) с суммами инвестиционного дохода и суммами чистого финансового результата (ЧФР)</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="СВ" type="ТипСуммаИДЧФР">
+				<xs:annotation>
+					<xs:documentation>Сумма страховых взносов на ОПС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ДСВ" type="ТипСуммаИДЧФР">
+				<xs:annotation>
+					<xs:documentation>Сумма взносов ДСВ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="СОФН" type="ТипСуммаИДЧФР">
+				<xs:annotation>
+					<xs:documentation>Сумма средств на софинансирование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="МСК" type="ТипСуммаИДЧФР">
+				<xs:annotation>
+					<xs:documentation>Сумма средств МСК</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:complexType name="ТипСуммаИД">
+		<xs:annotation>
+			<xs:documentation>Сведения о сумме средств и инвестиционный доходе/убытке нарастающим итогом по этим средствам</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Сумма" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма средств (части средств) (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИД" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипСуммаНПФ">
+		<xs:annotation>
+			<xs:documentation>Сведения о сумме средств, инвестиционный доходе/убытке, сумме компенсации, сумме гарантийного восполнения, сумме гарантийного возмещения по этим средствам и итоговой сумме</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Сумма" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма средств (части средств) (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИД" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Комп" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма компенсации (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ГВосп" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма гарантийного восполнения (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ГВозм" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма гарантийного возмещения (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Итого" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Общая сумма (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ТипСуммаИДЧФР">
+		<xs:annotation>
+			<xs:documentation>Сумма средств, сумма ИД и сумма ЧФР</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Сумма" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма средств (части средств) (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИД" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Инвестиционный доход/ убыток нарастающим итогом (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ЧФР" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма чистого финансового дохода</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ТипСуммаИДПредшПериод">
+		<xs:annotation>
+			<xs:documentation>Сумма средств, сумма ИД и сумма ЧФР</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Сумма" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>Сумма средств (части средств)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИДПредшПериод" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма инвестиционного дохода/ убытка предшествующих периодов</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ИД" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма инвестиционного дохода/ убытка отчетного периода</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:group name="ГрСуммыСПНПредшПериод">
+		<xs:annotation>
+			<xs:documentation>Суммы взносов в разрезе их видов (страховые взносы на ОПС, ДСВ, софинансирование, МСК) с суммами инвестиционного дохода за предшествующие периоды и текущий период</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="СВ" type="ТипСуммаИДПредшПериод">
+				<xs:annotation>
+					<xs:documentation>Сумма страховых взносов на ОПС</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ДСВ" type="ТипСуммаИДПредшПериод" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма взносов ДСВ</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="СОФН" type="ТипСуммаИДПредшПериод" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма средств на софинансирование</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="МСК" type="ТипСуммаИДПредшПериод" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Сумма средств МСК</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ВсегоСПН">
+				<xs:annotation>
+					<xs:documentation>Сумма средств пенсионных накоплений на начало (1 января) и на конец (31 декабря) отчетного периода</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="НаНачало" type="УТ:ТипДеньги">
+							<xs:annotation>
+								<xs:documentation>Сумма средств пенсионных накоплений на начало (1 января) отчетного периода</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="НаКонец" type="УТ:ТипДеньги">
+							<xs:annotation>
+								<xs:documentation>Сумма средств пенсионных накоплений на конец (31 декабря) отчетного периода</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+
+	<xs:simpleType name="ТипВариантРешения">
+		<xs:annotation>
+			<xs:documentation>Вариант решения о выплате
+			ОТКЗ – отказ в установлении
+			УСТН - установление
+			КОРР - корректировка
+			ДОПЛ – доплата
+			ПРОС - приостановление
+			ВОЗБ - возобновление
+			ПРЕК – прекращение</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:normalizedString">
+			<xs:enumeration value="ОТКЗ">
+				<xs:annotation>
+					<xs:documentation>Отказ в установлении</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="УСТН">
+				<xs:annotation>
+					<xs:documentation>Установление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="КОРР">
+				<xs:annotation>
+					<xs:documentation>Корректировка</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ДОПЛ">
+				<xs:annotation>
+					<xs:documentation>Доплата</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРОС">
+				<xs:annotation>
+					<xs:documentation>Приостановление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ВОЗБ">
+				<xs:annotation>
+					<xs:documentation>Возобновление</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ПРЕК">
+				<xs:annotation>
+					<xs:documentation>Прекращение</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="ГрСуммыРеестра">
+		<xs:annotation>
+			<xs:documentation>Группа элементов со сведениями о ЗЛ, общими для всех реестров</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="СуммыПереданные" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Группа элементов со сведениями о переданных суммах</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="ГрСуммыСПН">
+							<xs:annotation>
+								<xs:documentation>Суммы средств, переданных в ПФР</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ГарантийноеВосполнение" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cумма гарантийного восполнения(руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Компенсация" type="УТ:ТипДеньги" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Cумма компенсации (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ВсегоПередано" type="УТ:ТипДеньги">
+				<xs:annotation>
+					<xs:documentation>ВСЕГО передано средств пенсионных накоплений застрахованного лица (руб., коп.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:complexType name="ТипРасхождение">
+		<xs:annotation>
+			<xs:documentation>Тип для описания сведений о расхождении: ошибке или предупреждении</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Код" type="xs:normalizedString" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Код ошибки или предупреждения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ТекстСообщения" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Текст сообщения</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

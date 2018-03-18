@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/УИЕР/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:УИЕР2="http://пф.рф/ВсВО/НПФ/УИЕР/2017-08-09" xmlns:ИНПФ2="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/УИЕР/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" schemaLocation="ТипыИсходящие_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Уведомление о внесении изменений в единый реестр застрахованных лиц по Федеральному закону от 07.05.1998 № 75-ФЗ</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ УИЕР (Уведомление о внесении изменений в единый реестр застрахованных лиц по № 75-ФЗ). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="УИЕР">
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ИНПФ2:ТипДокументНПФ">
+								<xs:sequence>
+									<xs:element name="Раздел1" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 1. «Уход в НПФ из ПФР». Перечень сведений о застрахованных лицах, перешедших из ПФР в НПФ</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" type="ТипЗаписьИЕР" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 1</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР1">
+											<xs:annotation>
+												<xs:documentation>В пределах раздела номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="УИЕР2:Запись/УИЕР2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="Раздел2" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 2. «Возврат в ПФР». Перечень сведений о застрахованных лицах, вернувшихся из НПФ в ПФР</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" type="ТипЗаписьИЕР" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 2</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР2">
+											<xs:annotation>
+												<xs:documentation>В пределах раздела номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="УИЕР2:Запись/УИЕР2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="Раздел3" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 3. «Переход из НПФ в другие НПФ». Перечень сведений о застрахованных лицах, перешедших из НПФ в другие НПФ</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="СтраховщикПослеКорректировки" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения о списке ЗЛ, перешедших в новый НПФ</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="РеквизитыНПФ" type="НПФ2:ТипСведенияНПФ">
+																<xs:annotation>
+																	<xs:documentation>Сведения о НПФ, в который перешли застрахованные лица</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СписокСведений">
+																<xs:annotation>
+																	<xs:documentation>Перечень сведений о застрахованных лицах</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Запись" type="ТипЗаписьИЕР" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 3</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР3">
+											<xs:annotation>
+												<xs:documentation>В пределах раздела номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="УИЕР2:Запись/УИЕР2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="Раздел4" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Раздел 4. «Переход из других НПФ в НПФ». Перечень сведений о застрахованных лицах, перешедших из других НПФ в НПФ</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="СтраховщикДоКорректировки" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения о списке ЗЛ, перешедших из другого НПФ</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="РеквизитыНПФ" minOccurs="0" type="НПФ2:ТипСведенияНПФ">
+																<xs:annotation>
+																	<xs:documentation>Сведения о НПФ, из которого перешли застрахованные лица</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СписокСведений">
+																<xs:annotation>
+																	<xs:documentation>Перечень сведений о застрахованных лицах</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="Запись" type="ТипЗаписьИЕР" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+																			</xs:annotation>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+													<xs:annotation>
+														<xs:documentation>Итого количество ЗЛ по разделу 4</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерППР4">
+											<xs:annotation>
+												<xs:documentation>В пределах раздела номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="УИЕР2:Запись/УИЕР2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ТипЗаписьИЕР">
+		<xs:annotation>
+			<xs:documentation>Тип для описания общих сведений о записи из уведомления о внесении изменений в единый реестр застрахованных лиц</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="НомерПП" type="xs:positiveInteger">
+				<xs:annotation>
+					<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ЗЛ">
+				<xs:annotation>
+					<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="УТ:ГрАнкетныеДанные">
+							<xs:annotation>
+								<xs:documentation>Группа элементов для описания основных анкетных данных: ФИО, Пол, дата рождения</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+						<xs:element ref="УТ:МестоРождения">
+							<xs:annotation>
+								<xs:documentation>Сведения о месте рождения застрахованного лица</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element ref="УТ:СтраховойНомер">
+							<xs:annotation>
+								<xs:documentation>Страховой номер</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Договор" minOccurs="0" type="УТ:ТипРеквизитыДокумента">
+				<xs:annotation>
+					<xs:documentation>Дата заключения и номер договора</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ОснованиеКорректировки" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>Основание для корректировки: 
+					1) "Не вступление договора в силу в связи со смертью ЗЛ";
+					2) "Признание судом договора об ОПС недействительным";
+					3) "Неправомерный переход ЗЛ"
+					4) прочее</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Суммы" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Суммы средств, переданных ПФР с даты перехода до даты корректировки ЕРЗЛ. 
+					В случаях, если меняется страховщик на ПФР, должна быть включена сумма СПН по переходу. 
+					В случаях, если меняется страховщик на НПФ, должны быть указаны только очередные взносы</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:group ref="НПФ2:ГрСуммыСПНЧФР">
+							<xs:annotation>
+								<xs:documentation>Суммы СПН в разрезе их видов: на ОПС (СВ), ДСВ, софинансирование, МСК</xs:documentation>
+							</xs:annotation>
+						</xs:group>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

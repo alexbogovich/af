@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/АНПФ/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01" xmlns:АФ="http://пф.рф/АФ"
+            xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/АНПФ/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Анкета НПФ</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ АНПФ (Анкета НПФ). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="АНПФ">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="НаименованиеОрганизации" type="УТ:ТипНепустаяСтрока">
+								<xs:annotation>
+									<xs:documentation>Полное наименование организации</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НаименованиеКраткое" type="УТ:ТипКрИмяОрг">
+								<xs:annotation>
+									<xs:documentation>Краткое наименование организации</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="НалоговыйНомер" type="УТ:ТипНН">
+								<xs:annotation>
+									<xs:documentation>ИНН и КПП организации</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="АдресЮридический" type="УТ:ТипАдресОбщий">
+								<xs:annotation>
+									<xs:documentation>Адрес организации юридический (адрес места нахождения)</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="АдресКорреспонденции" type="УТ:ТипАдресОбщий">
+								<xs:annotation>
+									<xs:documentation>Адрес фактический (для почтовой корреспонденции) (с индексом)</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Телефон" type="УТ:ТипНомерТелефона">
+								<xs:annotation>
+									<xs:documentation>Контактный номер телефона НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Факс" type="УТ:ТипНомерТелефона">
+								<xs:annotation>
+									<xs:documentation>Факс НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="АдресЭлПочты" type="УТ:ТипАдресЭлПочты">
+								<xs:annotation>
+									<xs:documentation>Адрес электронной почты</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Сайт" type="xs:anyURI" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Адрес сайта в сети Интернет</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Руководитель" type="НПФ2:ТипРуководитель">
+								<xs:annotation>
+									<xs:documentation>Сведения о руководителе НПФ</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Лицензия">
+								<xs:annotation>
+									<xs:documentation>Реквизиты лицензии на осуществление деятельности негосударственного пенсионного фонда по пенсионному обеспечению и пенсионному страхованию</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Номер" type="УТ:ТипНепустаяСтрока">
+											<xs:annotation>
+												<xs:documentation>Номер документа</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ДатаВыдачи" type="xs:date">
+											<xs:annotation>
+												<xs:documentation>Дата выдачи документа</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ОрганВыдачи" type="УТ:ТипНепустаяСтрока">
+											<xs:annotation>
+												<xs:documentation>Орган, выдавший лицензию</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Подразделения" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Информация о региональных (филиальных) подразделениях</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Подразделение" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Подразделение организации</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Наименование" type="УТ:ТипНепустаяСтрока">
+														<xs:annotation>
+															<xs:documentation>Полное официальное наименование филиала НПФ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="АдресЮридический" type="УТ:ТипАдресОбщий">
+														<xs:annotation>
+															<xs:documentation>Адрес организации юридический (адрес места нахождения) филиала НПФ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="АдресКорреспонденции" type="УТ:ТипАдресОбщий">
+														<xs:annotation>
+															<xs:documentation>Адрес фактический (для почтовой корреспонденции) (с индексом) филиала НПФ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Телефон" type="УТ:ТипНомерТелефона">
+														<xs:annotation>
+															<xs:documentation>Контактный номер телефона филиала НПФ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Факс" type="УТ:ТипНомерТелефона">
+														<xs:annotation>
+															<xs:documentation>Факс филиала НПФ</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ДатаЗаполнения" type="xs:date">
+								<xs:annotation>
+									<xs:documentation>Дата заполнения анкеты</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Исполнитель" type="НПФ2:ТипИсполнитель">
+								<xs:annotation>
+									<xs:documentation>Сведения об исполнителе документа</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

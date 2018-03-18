@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="2.0" xmlns:АФ="http://пф.рф/АФ" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" xmlns="http://пф.рф/ВсВО/НПФ/ЗННЧ-О/2017-08-09" xmlns:УТ="http://пф.рф/унифицированныеТипы/2014-01-01"
+           xmlns:ЗННЧ-О2="http://пф.рф/ВсВО/НПФ/ЗННЧ-О/2017-08-09" xmlns:ИНПФ2="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" xmlns:НПФ2="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" targetNamespace="http://пф.рф/ВсВО/НПФ/ЗННЧ-О/2017-08-09">
+
+	<xs:import namespace="http://пф.рф/унифицированныеТипы/2014-01-01" schemaLocation="../../../УнифТипы_2014-01-01.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типыИсходящие/2017-08-09" schemaLocation="ТипыИсходящие_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/ВсВО/НПФ/типы/2017-08-09" schemaLocation="../ТипыНПФ_2017-08-09.xsd"/>
+	<xs:import namespace="http://пф.рф/АФ" schemaLocation="../../../ТипыОбщие.xsd"/>
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="../../../xmldsig_core_schema.xsd"/>
+
+	<xs:annotation>
+		<xs:documentation>Отказ на запрос на предоставление информации в соответствии с абзацами пятым и шестым пункта 2 Порядка представления Пенсионным фондом Российской Федерации в НПФ информации, необходимой НПФ для назначения накопительной части трудовой пенсии, а также иных выплат за счет средств пенсионных накоплений</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="ЭДПФР">
+		<xs:annotation>
+			<xs:documentation>Корневой элемент. Электронный документ ЗННЧ-О (Отказ на запрос на предоставление информации, необходимой НПФ для назначения НЧТП, а также иных выплат за счет СПН). Содержит сведения самого документа и служебную информацию об электронном документе.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ЗННЧ-О">
+					<xs:annotation>
+						<xs:documentation>Отказ на запрос на предоставление информации, необходимой НПФ для назначения НЧТП, а также иных выплат за счет СПН</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:complexContent>
+							<xs:extension base="ИНПФ2:ТипДокументНПФ">
+								<xs:sequence>
+									<xs:element name="СписокСведений">
+										<xs:annotation>
+											<xs:documentation>Перечень застрахованных лиц, в отношении ПФР предосталяет информацию  для назначения НЧТП и иных выплат за счет средств пенсионных накоплений</xs:documentation>
+										</xs:annotation>
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Запись" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>Сведения об одной записи (одном ЗЛ)</xs:documentation>
+													</xs:annotation>
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="НомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи (строки) по порядку</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ВходящийНомерПП" type="xs:positiveInteger">
+																<xs:annotation>
+																	<xs:documentation>Номер записи по порядку из запроса</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СуммаДСВ" minOccurs="0" type="НПФ2:ТипСуммаИД">
+																<xs:annotation>
+																	<xs:documentation>Сумма ДСВ</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="СуммаМСК" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Сумма МСК</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:complexContent>
+																		<xs:extension base="НПФ2:ТипСуммаИД">
+																			<xs:sequence>
+																				<xs:element name="НеРазнесенныйИД" type="УТ:ТипДеньги" minOccurs="0">
+																					<xs:annotation>
+																						<xs:documentation>Неразнесенный инвестиционный доход</xs:documentation>
+																					</xs:annotation>
+																				</xs:element>
+																			</xs:sequence>
+																		</xs:extension>
+																	</xs:complexContent>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="ДатаЗапроса" type="xs:date" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Дата запроса</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ЗЛ" type="НПФ2:ТипЗастрахованноеЛицо">
+																<xs:annotation>
+																	<xs:documentation>Сведения о застрахованном лице</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="Договор" type="УТ:ТипРеквизитыДокумента" minOccurs="0">
+																<xs:annotation>
+																	<xs:documentation>Дата заключения и номер договора</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+															<xs:element name="ПричиныОтказа">
+																<xs:annotation>
+																	<xs:documentation>Список причин отказа</xs:documentation>
+																</xs:annotation>
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="ПричинаОтказа" maxOccurs="unbounded">
+																			<xs:annotation>
+																				<xs:documentation>Причина отказа</xs:documentation>
+																			</xs:annotation>
+																			<xs:complexType>
+																				<xs:sequence>
+																					<xs:element name="Код" type="xs:normalizedString">
+																						<xs:annotation>
+																							<xs:documentation>Код причины отказа</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																					<xs:element name="Наименование" type="xs:normalizedString">
+																						<xs:annotation>
+																							<xs:documentation>Наименование причины отказа</xs:documentation>
+																						</xs:annotation>
+																					</xs:element>
+																				</xs:sequence>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+										<xs:unique name="УникальныйНомерПП">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="ЗННЧ-О2:Запись/ЗННЧ-О2:НомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+										<xs:unique name="УникальныйСНИЛС">
+											<xs:annotation>
+												<xs:documentation>В пределах файла страховой номер застрахованного лица должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="ЗННЧ-О2:Запись/ЗННЧ-О2:ЗЛ/УТ:СтраховойНомер"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+										<xs:unique name="УникальныйВходящийНомерПП">
+											<xs:annotation>
+												<xs:documentation>В пределах файла номер записи по порядку  должен быть уникален</xs:documentation>
+											</xs:annotation>
+											<xs:selector xpath="ЗННЧ-О2:Запись/ЗННЧ-О2:ВходящийНомерПП"/>
+											<xs:field xpath="."/>
+										</xs:unique>
+									</xs:element>
+									<xs:element name="КоличествоЗЛ" type="xs:positiveInteger">
+										<xs:annotation>
+											<xs:documentation>Итого количество ЗЛ по документу</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:sequence>
+							</xs:extension>
+						</xs:complexContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ЭлектроннаяПодпись" xmlns="http://www.w3.org/2000/09/xmldsig#" type="SignatureType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Электронная подпись (ЭП) в соответствии со спецификацией XMLDsig</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="СлужебнаяИнформация" type="НПФ2:ТипСлужебнаяИнформацияНПФ">
+					<xs:annotation>
+						<xs:documentation>Служебная информация об электронном документе</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
