@@ -3,7 +3,6 @@ package com.github.alexbogovich.af
 import com.github.alexbogovich.af.AfFileTypeUtils.getUspnFileType
 import com.github.alexbogovich.af.ResourceIntraction.getFiles
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 
